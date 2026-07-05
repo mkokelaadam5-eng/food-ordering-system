@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - FoodHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">🍕 FoodHub</a>
+            <ul class="navbar-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/menu">Menu</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+            <div class="navbar-icons">
+                <a href="/cart" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" style="display: none;">0</span>
+                </a>
+                <a href="/admin" title="Admin Dashboard">
+                    <i class="fas fa-cog"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Section -->
+    <section class="container section-padding">
+        <div class="section-header">
+            <h2>Checkout</h2>
+        </div>
+
+        <form class="checkout-form" onsubmit="submitCheckout(event)">
+            <h3 style="margin-bottom: 1.5rem;">Delivery Information</h3>
+            
+            <div class="form-group">
+                <label for="customer-name">Full Name</label>
+                <input type="text" id="customer-name" name="customer_name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customer-phone">Phone Number</label>
+                <input type="tel" id="customer-phone" name="customer_phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="customer-address">Delivery Address</label>
+                <textarea id="customer-address" name="customer_address" required></textarea>
+            </div>
+
+            <h3 style="margin-bottom: 1.5rem; margin-top: 2rem;">Payment Method</h3>
+            
+            <div class="form-group">
+                <label for="payment-method">Select Payment Method</label>
+                <select id="payment-method" name="payment_method" required>
+                    <option value="">-- Choose Payment Method --</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Cash on Delivery">Cash on Delivery</option>
+                    <option value="Mobile Money">Mobile Money</option>
+                </select>
+            </div>
+
+            <!-- Hidden field for total price -->
+            <input type="hidden" id="total-price" name="total_price" value="0">
+
+            <h3 style="margin-bottom: 1.5rem; margin-top: 2rem;">Order Summary</h3>
+            
+            <div style="background-color: var(--light-bg); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="checkout-subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee:</span>
+                    <span>$2.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (10%):</span>
+                    <span id="checkout-tax">$0.00</span>
+                </div>
+                <div class="summary-row total" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                    <span>Total Amount:</span>
+                    <span id="checkout-total">$0.00</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem;">
+                <i class="fas fa-lock"></i> Place Order
+            </button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div>
+                <h4>🍕 FoodHub</h4>
+                <p>Your trusted platform for food delivery</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <a href="/menu">Menu</a>
+                <a href="/about">About Us</a>
+                <a href="/contact">Contact</a>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <p>Email: support@foodhub.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 FoodHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Update checkout summary
+        function updateCheckoutSummary() {
+            const subtotal = parseFloat(document.getElementById('summary-total')?.textContent.slice(1)) || 0;
+            const tax = (subtotal * 0.1).toFixed(2);
+            const delivery = 2.00;
+            const total = (subtotal + parseFloat(tax) + delivery).toFixed(2);
+            
+            document.getElementById('checkout-subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('checkout-tax').textContent = '$' + tax;
+            document.getElementById('checkout-total').textContent = '$' + total;
+            document.getElementById('total-price').value = subtotal.toFixed(2);
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateCheckoutSummary);
+    </script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
