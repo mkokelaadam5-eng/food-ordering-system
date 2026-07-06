@@ -1,4 +1,34 @@
-// Food Ordering System - Main JavaScript
+// Update navbar to show user name and logout button
+function updateNavbar() {
+  const navIcons = document.querySelector('.navbar-icons');
+  if (!navIcons) return;
+
+  // This is handled by server-side rendering via res.locals.user
+  // But we can add client-side enhancements here if needed
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartBadge();
+  updateNavbar();
+  
+  // Load menu if on menu page
+  const menuGrid = document.getElementById('menu-grid');
+  if (menuGrid) {
+    loadMenu();
+  }
+  
+  // Load cart if on cart page
+  const cartContainer = document.getElementById('cart-items');
+  if (cartContainer) {
+    renderCart();
+  }
+  
+  // Track order if on tracking page
+  if (document.getElementById('tracking-result')) {
+    trackOrder();
+  }
+});
 
 // Initialize cart from localStorage
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -280,7 +310,10 @@ function submitContact(event) {
 function showNotification(message, type = 'success') {
   const alertDiv = document.createElement('div');
   alertDiv.className = `alert alert-${type}`;
-  alertDiv.textContent = message;
+  alertDiv.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+    <span>${message}</span>
+  `;
   alertDiv.style.position = 'fixed';
   alertDiv.style.top = '80px';
   alertDiv.style.right = '20px';
@@ -322,25 +355,3 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
-  updateCartBadge();
-  
-  // Load menu if on menu page
-  const menuGrid = document.getElementById('menu-grid');
-  if (menuGrid) {
-    loadMenu();
-  }
-  
-  // Load cart if on cart page
-  const cartContainer = document.getElementById('cart-items');
-  if (cartContainer) {
-    renderCart();
-  }
-  
-  // Track order if on tracking page
-  if (document.getElementById('tracking-result')) {
-    trackOrder();
-  }
-});

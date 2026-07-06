@@ -47,6 +47,13 @@ p {
   color: var(--gray-text);
 }
 
+small {
+  display: block;
+  color: var(--gray-text);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
 /* Buttons */
 .btn {
   display: inline-block;
@@ -166,6 +173,21 @@ nav.navbar {
   font-weight: 700;
 }
 
+/* User Menu */
+.navbar-user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--border-color);
+}
+
+.navbar-user-name {
+  font-weight: 600;
+  color: var(--dark-text);
+  font-size: 0.95rem;
+}
+
 /* Hero Section */
 .hero {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
@@ -227,6 +249,135 @@ nav.navbar {
   height: 4px;
   background-color: var(--primary-color);
   border-radius: 2px;
+}
+
+/* Authentication Styles */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.auth-card {
+  background-color: var(--white);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  width: 100%;
+  padding: 2.5rem;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  color: var(--gray-text);
+  font-size: 0.95rem;
+}
+
+.auth-form {
+  margin-bottom: 2rem;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.auth-form label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: var(--dark-text);
+}
+
+.auth-form label i {
+  color: var(--primary-color);
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.875rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
+}
+
+.demo-section {
+  background-color: var(--light-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin: 2rem 0;
+  border-left: 4px solid var(--primary-color);
+}
+
+.demo-credentials {
+  background-color: var(--white);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-family: 'Courier New', monospace;
+}
+
+.demo-credentials p {
+  margin-bottom: 0.5rem;
+  color: var(--dark-text);
+}
+
+.demo-credentials p:last-child {
+  margin-bottom: 0;
+}
+
+.auth-footer {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.auth-footer p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.auth-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
 }
 
 /* Menu Items Grid */
@@ -493,6 +644,7 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="phone"],
+input[type="password"],
 input[type="number"],
 textarea,
 select {
@@ -743,6 +895,14 @@ footer a:hover {
   padding: 1rem;
   border-radius: 0.5rem;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.alert i {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
 }
 
 .alert-success {
@@ -847,6 +1007,10 @@ footer a:hover {
   .admin-table td {
     padding: 0.75rem;
   }
+
+  .auth-card {
+    padding: 2rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -873,5 +1037,9 @@ footer a:hover {
   .category-btn {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
+  }
+
+  .auth-card {
+    padding: 1.5rem;
   }
 }
