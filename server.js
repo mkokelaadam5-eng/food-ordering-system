@@ -3,9 +3,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const session = require('express-session');
 const db = require('./models/database');
 
 // Import routes
+const authRoutes = require('./routes/auth');
 const menuRoutes = require('./routes/menu');
 const cartRoutes = require('./routes/cart');
 const orderRoutes = require('./routes/orders');
@@ -22,14 +24,34 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Session middleware - configure session storage
+app.use(session({
+  secret: 'foodhub-secret-key-change-in-production', // Change this in production
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: false, // Set to true if using HTTPS
+    maxAge: 1000 * 60 * 60 * 24 // 24 hours
+  }
+}));
+
 // Set view engine to EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Make user data available to all views
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
+
 // Initialize database
 db.initializeDatabase();
 
-// Routes
+// Authentication Routes
+app.use('/', authRoutes);
+
+// API Routes
 app.use('/api/menu', menuRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
@@ -65,7 +87,12 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
+// Admin route with authentication middleware
 app.get('/admin', (req, res) => {
+  // Check if user is logged in and is an admin
+  if (!req.session.user || req.session.user.role !== 'admin') {
+    return res.redirect('/login');
+  }
   res.render('admin');
 });
 
@@ -76,5 +103,8 @@ app.use((req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Food Ordering System running on http://localhost:${PORT}`);
+  console.log(`\n🍽️  Food Ordering System running on http://localhost:${PORT}`);
+  console.log(`\n📝 Demo Admin Login:`);
+  console.log(`   Email: admin@foodhub.com`);
+  console.log(`   Password: admin123\n`);
 });

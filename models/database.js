@@ -16,6 +16,18 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 // Initialize database tables
 const initializeDatabase = () => {
+  // Create Users table for authentication
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      role TEXT DEFAULT 'customer',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
   // Create Menu Items table
   db.run(`
     CREATE TABLE IF NOT EXISTS menu_items (
@@ -33,6 +45,7 @@ const initializeDatabase = () => {
   db.run(`
     CREATE TABLE IF NOT EXISTS orders (
       id TEXT PRIMARY KEY,
+      user_id INTEGER,
       customer_name TEXT NOT NULL,
       customer_phone TEXT NOT NULL,
       customer_address TEXT NOT NULL,
@@ -40,7 +53,8 @@ const initializeDatabase = () => {
       total_price REAL NOT NULL,
       status TEXT DEFAULT 'Pending',
       items TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
     )
   `);
 
@@ -89,6 +103,23 @@ const initializeDatabase = () => {
         );
       });
       console.log('Default menu items inserted');
+    }
+  });
+
+  // Create a demo admin user if no users exist
+  db.all('SELECT COUNT(*) as count FROM users', (err, result) => {
+    if (result[0].count === 0) {
+      const bcrypt = require('bcryptjs');
+      // Hash a default admin password: admin123
+      const hashedPassword = bcrypt.hashSync('admin123', 10);
+      
+      db.run(
+        'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)',
+        ['Admin User', 'admin@foodhub.com', hashedPassword, 'admin'],
+        () => {
+          console.log('Demo admin user created - Email: admin@foodhub.com, Password: admin123');
+        }
+      );
     }
   });
 };

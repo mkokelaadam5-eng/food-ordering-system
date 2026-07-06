@@ -4,8 +4,27 @@ const { db } = require('../models/database');
 
 const router = express.Router();
 
+// Middleware to check if user is authenticated and is admin
+const isAdmin = (req, res, next) => {
+  if (!req.session.user || req.session.user.role !== 'admin') {
+    return res.redirect('/login');
+  }
+  next();
+};
+
+// Get all menu items (with admin check)
+router.get('/menu', isAdmin, (req, res) => {
+  db.all('SELECT * FROM menu_items ORDER BY category', (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: 'Failed to fetch menu items' });
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
 // Add new menu item
-router.post('/menu/add', (req, res) => {
+router.post('/menu/add', isAdmin, (req, res) => {
   const { name, category, price, description, image } = req.body;
   
   // Validate input
@@ -27,7 +46,7 @@ router.post('/menu/add', (req, res) => {
 });
 
 // Delete menu item
-router.delete('/menu/:id', (req, res) => {
+router.delete('/menu/:id', isAdmin, (req, res) => {
   const id = req.params.id;
   
   db.run('DELETE FROM menu_items WHERE id = ?', [id], function(err) {
@@ -42,7 +61,7 @@ router.delete('/menu/:id', (req, res) => {
 });
 
 // Update menu item
-router.put('/menu/:id', (req, res) => {
+router.put('/menu/:id', isAdmin, (req, res) => {
   const id = req.params.id;
   const { name, category, price, description, image } = req.body;
   
@@ -65,8 +84,8 @@ router.put('/menu/:id', (req, res) => {
   );
 });
 
-// Get all orders (for admin dashboard)
-router.get('/orders', (req, res) => {
+// Get all orders (admin only)
+router.get('/orders', isAdmin, (req, res) => {
   db.all('SELECT * FROM orders ORDER BY created_at DESC', (err, rows) => {
     if (err) {
       res.status(500).json({ error: 'Failed to fetch orders' });
