@@ -23,9 +23,25 @@
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-badge" style="display: none;">0</span>
                 </a>
-                <a href="/admin" title="Admin Dashboard">
-                    <i class="fas fa-cog"></i>
-                </a>
+                <% if (user) { %>
+                    <div class="navbar-user-menu">
+                        <span class="navbar-user-name">
+                            <i class="fas fa-user-circle"></i> <%= user.name %>
+                        </span>
+                        <% if (user.role === 'admin') { %>
+                            <a href="/admin" title="Admin Dashboard" style="text-decoration: none;">
+                                <i class="fas fa-cog"></i>
+                            </a>
+                        <% } %>
+                        <a href="/logout" title="Logout" style="text-decoration: none;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    </div>
+                <% } else { %>
+                    <a href="/login" title="Login">
+                        <i class="fas fa-user"></i>
+                    </a>
+                <% } %>
             </div>
         </div>
     </nav>
@@ -33,74 +49,94 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Welcome to FoodHub</h1>
-            <p>Order delicious food from your favorite local restaurants delivered right to your doorstep</p>
-            <a href="/menu" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
-                Order Now <i class="fas fa-arrow-right"></i>
+            <h1>Welcome to FoodHub 🍕</h1>
+            <p>Order your favorite food and get it delivered hot and fresh!</p>
+            <a href="/menu" class="btn btn-primary" style="font-size: 1.1rem;">
+                <i class="fas fa-utensils"></i> Browse Menu
             </a>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Featured Section -->
     <section class="container section-padding">
         <div class="section-header">
-            <h2>Why Choose FoodHub?</h2>
+            <h2>🌟 Why Choose FoodHub?</h2>
         </div>
-        <div class="menu-grid">
-            <div class="menu-item" style="text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div style="text-align: center;">
+                <i style="font-size: 3rem; color: var(--primary-color);
+ class="fas fa-lightning"></i>
                 <h3>Fast Delivery</h3>
-                <p>Get your order delivered in 30-45 minutes</p>
+                <p>Get your food delivered in 30 minutes or it's free!</p>
             </div>
-            <div class="menu-item" style="text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">🍽️</div>
-                <h3>Fresh Food</h3>
-                <p>All items are freshly prepared by our expert chefs</p>
+            <div style="text-align: center;">
+                <i style="font-size: 3rem; color: var(--primary-color);" class="fas fa-shield-alt"></i>
+                <h3>Safe & Secure</h3>
+                <p>Your payment and personal data are always protected</p>
             </div>
-            <div class="menu-item" style="text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">💰</div>
+            <div style="text-align: center;">
+                <i style="font-size: 3rem; color: var(--primary-color);" class="fas fa-hand-holding-heart"></i>
+                <h3>Quality Assured</h3>
+                <p>Only the freshest ingredients in every meal</p>
+            </div>
+            <div style="text-align: center;">
+                <i style="font-size: 3rem; color: var(--primary-color);" class="fas fa-dollar-sign"></i>
                 <h3>Best Prices</h3>
-                <p>Competitive pricing with amazing discounts</p>
+                <p>Great discounts and special offers every day</p>
             </div>
-            <div class="menu-item" style="text-align: center;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">👍</div>
-                <h3>Customer Support</h3>
-                <p>24/7 support to help with your orders</p>
-            </div>
+        </div>
+    </section>
+
+    <!-- Popular Dishes -->
+    <section class="container section-padding" style="background-color: var(--light-bg);">
+        <div class="section-header">
+            <h2>🍴 Popular Dishes</h2>
+        </div>
+        <div class="menu-grid" id="featured-menu">
+            <!-- Featured items will be loaded here -->
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="/menu" class="btn btn-primary">
+                <i class="fas fa-arrow-right"></i> View Full Menu
+            </a>
         </div>
     </section>
 
     <!-- Testimonials Section -->
-    <section class="container section-padding" style="background-color: var(--light-bg); border-radius: 0.75rem;">
+    <section class="container section-padding">
         <div class="section-header">
-            <h2>What Our Customers Say</h2>
+            <h2>⭐ What Our Customers Say</h2>
         </div>
         <div class="testimonials-slider">
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
-                <div class="testimonial-text">"FoodHub has completely changed how I order food. The app is user-friendly and the food always arrives hot and fresh!"</div>
-                <div class="testimonial-author">- Ahmad Malove</div>
+                <p class="testimonial-text">"Amazing food quality and super fast delivery! I'm ordering from FoodHub every week now."</p>
+                <p class="testimonial-author">- Ahmad Malove</p>
             </div>
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
-                <div class="testimonial-text">"Excellent service! The variety of food options is amazing and the delivery team is always professional and punctual."</div>
-                <div class="testimonial-author">- Rehema Nchimbi</div>
+                <p class="testimonial-text">"Best online food ordering platform I've used. Great customer service and delicious food!"</p>
+                <p class="testimonial-author">- Rehema Nchimbi</p>
             </div>
             <div class="testimonial-card">
                 <div class="stars">★★★★★</div>
-                <div class="testimonial-text">"Best food ordering system I've used. Great prices, amazing food quality, and the order tracking is very helpful!"</div>
-                <div class="testimonial-author">- Romelu Lukaku</div>
+                <p class="testimonial-text">"Highly recommend FoodHub! Fresh food, reasonable prices, and excellent delivery service."</p>
+                <p class="testimonial-author">- Romelu Lukaku</p>
             </div>
         </div>
     </section>
 
-    <!-- Call to Action -->
-    <section class="container section-padding" style="text-align: center;">
-        <h2 style="margin-bottom: 1rem;">Ready to Order?</h2>
-        <p style="margin-bottom: 2rem; font-size: 1.1rem;">Browse our delicious menu and place your order today!</p>
-        <a href="/menu" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
-            Explore Menu <i class="fas fa-utensils"></i>
-        </a>
+    <!-- CTA Section -->
+    <section style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; padding: 4rem 2rem; text-align: center;">
+        <div class="container">
+            <h2 style="color: white; margin-bottom: 1rem;">Ready to Order? 🚀</h2>
+            <p style="color: rgba(255, 255, 255, 0.9); font-size: 1.1rem; margin-bottom: 2rem;">
+                Browse our delicious menu and place your order now!
+            </p>
+            <a href="/menu" class="btn" style="background-color: white; color: var(--primary-color); font-weight: 600; font-size: 1.1rem;">
+                <i class="fas fa-shopping-bag"></i> Start Ordering
+            </a>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -109,38 +145,62 @@
             <div>
                 <h4>🍕 FoodHub</h4>
                 <p>Your trusted platform for food delivery</p>
-                <p style="margin-top: 1rem;">
-                    <a href="#" style="margin-right: 1rem;"><i class="fab fa-facebook"></i></a>
-                    <a href="#" style="margin-right: 1rem;"><i class="fab fa-twitter"></i></a>
-                    <a href="#" style="margin-right: 1rem;"><i class="fab fa-instagram"></i></a>
-                </p>
             </div>
             <div>
                 <h4>Quick Links</h4>
                 <a href="/menu">Menu</a>
                 <a href="/about">About Us</a>
                 <a href="/contact">Contact</a>
-                <a href="/">Home</a>
             </div>
             <div>
                 <h4>Company</h4>
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms of Service</a>
-                <a href="#">FAQs</a>
-                <a href="#">Blog</a>
             </div>
             <div>
                 <h4>Support</h4>
                 <p>Email: support@foodhub.com</p>
                 <p>Phone: +1 (555) 123-4567</p>
-                <p>Available 24/7</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 FoodHub. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--primary-color);"></i> by our team</p>
+            <p>&copy; 2024 FoodHub. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="/js/app.js"></script>
+    <script>
+        // Load featured menu items on homepage
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/menu')
+                .then(response => response.json())
+                .then(items => {
+                    // Get first 6 items
+                    const featured = items.slice(0, 6);
+                    const grid = document.getElementById('featured-menu');
+                    
+                    let html = '';
+                    featured.forEach(item => {
+                        html += `
+                            <div class="menu-item">
+                                <img src="${item.image}" alt="${item.name}" class="menu-item-image">
+                                <div class="menu-item-content">
+                                    <div class="menu-item-category">${item.category}</div>
+                                    <div class="menu-item-name">${item.name}</div>
+                                    <div class="menu-item-description">${item.description || 'Delicious food item'}</div>
+                                    <div class="menu-item-footer">
+                                        <div class="menu-item-price">$${item.price.toFixed(2)}</div>
+                                        <button class="btn btn-primary" onclick="addToCart(${item.id}, '${item.name}', ${item.price})">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    grid.innerHTML = html;
+                })
+                .catch(error => console.error('Error loading featured items:', error));
+        });
+    </script>
 </body>
 </html>
