@@ -72,8 +72,10 @@ const initializeDatabase = () => {
   `);
 
   // Insert default menu items if not exists
-  db.all('SELECT COUNT(*) as count FROM menu_items', (err, result) => {
-    if (result[0].count === 0) {
+  db.get('SELECT COUNT(*) as count FROM menu_items', (err, row) => {
+    if (err) {
+      console.error('Error checking menu_items count:', err);
+    } else if (row && row.count === 0) {
       const defaultMenuItems = [
         // Main Dishes
         { name: 'Grilled Chicken Burger', category: 'Main Dishes', price: 8.99, description: 'Juicy grilled chicken with lettuce and tomato', image: 'https://source.unsplash.com/400x300/?burger' },
@@ -107,8 +109,10 @@ const initializeDatabase = () => {
   });
 
   // Create a demo admin user if no users exist
-  db.all('SELECT COUNT(*) as count FROM users', (err, result) => {
-    if (result[0].count === 0) {
+  db.get('SELECT COUNT(*) as count FROM users', (err, row) => {
+    if (err) {
+      console.error('Error checking users count:', err);
+    } else if (row && row.count === 0) {
       const bcrypt = require('bcryptjs');
       // Hash a default admin password: admin123
       const hashedPassword = bcrypt.hashSync('admin123', 10);
